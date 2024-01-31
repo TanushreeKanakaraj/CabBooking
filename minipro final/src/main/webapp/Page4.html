@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Form</title>
+    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            
+            display: flex;
+            
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-image: url('https://wallpapercave.com/dwp2x/wp6884788.jpg');
+            background-size: cover;
+        }
+
+        
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 16px;
+            box-sizing: border-box;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #3498db;
+            color: #fff;
+            padding: 15px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        #upiDetails {
+            display: none;
+            margin-top: 20px;
+        }
+
+        #qrCode {
+            display: none;
+            margin-top: 20px;
+        }
+
+        #proceedButton {
+            background-color: #3498db;
+            color: #fff;
+            padding: 15px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        #proceedButton:hover {
+            background-color: #2980b9;
+        }
+
+        /* Add style for the anchor tag */
+        #proceedLink {
+            text-decoration: none;
+            color: #fff;
+        }
+    </style>
+</head>
+
+<body>
+    <form method="post" action="FinalServlet"></form>
+
+    <div class="payment-form">
+        <h2>Payment Form</h2>
+
+        <form id="paymentForm" onsubmit="return handlePayment()">
+            <label for="paymentMethod">&nbsp;&nbsp;&nbsp;Select Payment Method:</label>
+            <select id="paymentMethod" name="paymentMethod" onchange="toggleUPISection()">
+                <option value="cash">Cash on Delivery</option>
+                <option value="upi">UPI</option>
+            </select>
+
+            <div id="upiDetails">
+                <!-- Display QR Code automatically when UPI is selected -->
+                <div id="qrCode"></div>
+            </div>
+        </form>
+
+        <!-- Wrap the button with an anchor tag -->
+        <a id="proceedLink" href="http://localhost:8080/minipro_final/Page5.html">
+            <button id="proceedButton" type="submit">Next</button>
+        </a>
+    </div>
+
+    <script>
+        function toggleUPISection() {
+            var paymentMethod = document.getElementById('paymentMethod').value;
+            var upiDetails = document.getElementById('upiDetails');
+            var qrCodeDiv = document.getElementById('qrCode');
+
+            if (paymentMethod === 'upi') {
+                upiDetails.style.display = 'block';
+                // Call the function to generate the QR code
+                generateQRCode();
+                qrCodeDiv.style.display = 'block';
+            } else {
+                upiDetails.style.display = 'none';
+                qrCodeDiv.style.display = 'none';
+            }
+        }
+
+        function generateQRCode() {
+            var qrCodeDiv = document.getElementById('qrCode');
+            
+            // Clear previous content
+            qrCodeDiv.innerHTML = '';
+
+            // Create a new QRCode instance
+            var qrcode = new QRCode(qrCodeDiv, {
+                text: 'upi://',
+                width: 128,
+                height: 128
+            });
+        }
+
+        function handlePayment() {
+            // Add any necessary validation logic here
+            return true; // Return true to submit the form
+        }
+    </script>
+</body>
+
+</html>
